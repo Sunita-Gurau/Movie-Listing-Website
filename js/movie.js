@@ -8,9 +8,9 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
         <div
           class="border-4 border-white hover:border-green-500 relative group"
         >
-          <a href="review.html">
+          <div onclick="openDetail(${values.id})">
             <img src="${values.medium_cover_image}" alt="${values.title}" />
-          </a>
+          </div>
           <div
             class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
           >
@@ -21,7 +21,8 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
               <p class="text-white text-2xl font-bold">${values.rating}</p>
               <p class="text-white text-2xl font-bold pt-5">${values.genres[0]}</p>
               <p class="text-white text-2xl font-bold">${values.genres[1]}</p>
-              <button
+              <button 
+              onclick="openDetail(${values.id})"
                 class="bg-green-500 text-white text-sm px-2 py-2 mt-5 font-semibold rounded"
               >
                 View Details
@@ -41,3 +42,9 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
 }).catch((error) =>{
     console.log("Unable to fetch data",error);
 })
+
+function openDetail(id)
+{
+    localStorage.setItem("movieId",id);
+    window.location.href="detail.html";
+}

@@ -1,16 +1,23 @@
-let response= fetch("https://yts.mx/api/v2/list_movies.json")
+const movieId=parseInt(localStorage.getItem("movieId"));
+
+
+let response= fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}`)
 .then((data) =>data.json())
-.then(({data}) => {
-    console.log(data);
-    let data1="";
-    data.movies.map((values) => {
-        data1=`<section class="mx-48 my-8 flex">
+.then(async ({data}) => {
+  let review= await fetch(`https://yts.mx/api/v2/movie_suggestions.json?movie_id=${movieId}`).then(data => data.json()).then(({data}) => data.movies)
+  console.log(review)
+  return {data, suggestions: review}
+})
+.then(({data, suggestions}) => {
+    let data1=`<section class="mx-48 my-8 flex">
         <div class="w-1/4 mr-5">
+        <a href="${data.movie.url}">
           <img
-            src="${values.medium_cover_image}"
-            alt="${values.title}"
+            src="${data.movie.medium_cover_image}"
+            alt="${data.movie.title}"
             class="w-full border-4 border-white mb-2"
           />
+          </a>
           <button
             class="w-full bg-green-500 rounded py-2 mb-2 text-white text-xl font-bold"
           >
@@ -25,14 +32,14 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
         </div>
         <div class="w-2/4 px-12 ml-6">
           <h1 class="text-4xl text-white font-bold pb-5">
-          ${values.title}
+          ${data.movie.title}
           </h1>
-          <p class="text-white text-sm font-bold">${values.year}</p>
-          <p class="text-white font-bold">${values.genres}</p>
+          <p class="text-white text-sm font-bold">${data.movie.year}</p>
+          <p class="text-white font-bold">${data.movie.genres}</p>
           <div class="flex items-center">
             <p class="text-white font-bold italic mr-2">Available in:</p>
             <p class="text-white text-xs border-[1px] border-white px-2 mr-2">
-              2160p.WEB
+            ${data.movie.type}
             </p>
           </div>
           <p class="text-white text-sm my-2 font-semibold">
@@ -41,7 +48,7 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
           </p>
           <p class="text-white text-sm mb-4 font-semibold">
             BlueRay estimated Date:
-            <span class="text-green-500 font-bold pl-2">July 04,2022</span>
+            <span class="text-green-500 font-bold pl-2">${data.movie.date_uploaded}</span>
           </p>
           <button
             class="rounded py-2 px-4 text-white text-xs border-[1px] border-white font-bold my-4"
@@ -51,7 +58,7 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
           </button>
           <div class="flex items-center">
             <i class="fa-solid fa-heart text-green-500 text-2xl mr-8"></i>
-            <p class="text-white text-xl font-bold px-2 mr-2">4</p>
+            <p class="text-white text-xl font-bold px-2 mr-2">${data.movie.like_count}</p>
           </div>
           <div class="flex items-center">
             <i class="fa-solid fa-popcorn"></i>
@@ -65,7 +72,7 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
           <div class="flex items-center">
             <i class="fa-solid fa-heart text-green-500 text-2xl mr-8"></i>
             <p class="text-white text-xl font-bold px-2 mr-2">
-              7.7<i class="fa-solid fa-star text-green-500 text-xl pb-3 ml-2"></i>
+              ${data.movie.rating}<i class="fa-solid fa-star text-green-500 text-xl pb-3 ml-2"></i>
             </p>
           </div>
           <div class="flex items-center mt-8">
@@ -88,30 +95,20 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
           </div>
         </div>
         <div class="w-1/4">
-          <p class="pl-3 pb-3 text-xl text-white font-bold">Similar Movies</p>
-          <div class="flex mb-3">
-            <img
-              class="border-4 border-white ml-3 w-48 h-48"
-              src="https://img.yts.mx/assets/images/movies/northanger_abbey_2007/medium-cover.jpg"
-              alt="movies"
-            />
-            <img
-              class="border-4 border-white ml-3 w-48 h-48"
-              src="https://img.yts.mx/assets/images/movies/northanger_abbey_2007/medium-cover.jpg"
-              alt="movies"
-            />
+        <p class="pl-3 pb-3 text-xl text-white font-bold">Similar Movies</p>
+        <div class="grid gap-x-2 gap-y-2 grid-cols-2">
+          ${
+            suggestions.map(suggestion => (
+              ` <div class="">
+              <img
+                class="border-4 border-white ml-3 w-40 h-40"
+                src="${suggestion.medium_cover_image}"
+                alt="${suggestion.title}"
+              />    
+            </div>`
+            ))
+          }
           </div>
-          <div class="flex">
-            <img
-              class="border-4 border-white ml-3 w-48 h-48"
-              src="https://img.yts.mx/assets/images/movies/northanger_abbey_2007/medium-cover.jpg"
-              alt="movies"
-            />
-            <img
-              class="border-4 border-white ml-3 w-48 h-48"
-              src="https://img.yts.mx/assets/images/movies/northanger_abbey_2007/medium-cover.jpg"
-              alt="movies"
-            />
           </div>
         </div>
       </section>
@@ -148,13 +145,13 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
         <div class="w-2/3 mr-12">
           <p class="pb-3 text-xl text-white font-bold">Plot Summary</p>
           <p class="text-base text-[#919191] mb-12">
-            ${values.summary}
+            ${data.movie.description_intro}
           </p>
           <p class="text-white text-sm my-2 italic font-semibold">
             Uploaded By: OTTO
           </p>
           <span class="text-white text-sm font-bold italic"
-            >${values.date_uploaded}</span
+            >${data.movie.date_uploaded}</span
           >
         </div>
         <div class="w-1/3 pl-12">
@@ -257,8 +254,7 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
         </div>
         <div class="w-1/2 ml-8">
           <p class="pb-3 text-xl text-white font-bold">
-            <i class="fa-solid fa-star text-green-500 text-xl pr-2"></i> Plot
-            Summary
+            <i class="fa-solid fa-star text-green-500 text-xl pr-2"></i> Movie Reviews
           </p>
           <p class="text-[#919191] text-sm my-2 font-semibold">
             Reviewed by
@@ -282,9 +278,14 @@ let response= fetch("https://yts.mx/api/v2/list_movies.json")
           <p class="text-base text-[#919191]">Read More</p>
         </div>
       </section>`;
-    });
    document.getElementById("detailPage").innerHTML=data1;
     
 }).catch((error) =>{
     console.log("Unable to fetch data",error);
 })
+
+
+
+
+
+
