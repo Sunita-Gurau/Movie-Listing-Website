@@ -1,15 +1,15 @@
-const movieId=parseInt(localStorage.getItem("movieId"));
+const movieId = parseInt(localStorage.getItem("movieId"));
 
 
-let response= fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}`)
-.then((data) =>data.json())
-.then(async ({data}) => {
-  let review= await fetch(`https://yts.mx/api/v2/movie_suggestions.json?movie_id=${movieId}`).then(data => data.json()).then(({data}) => data.movies)
-  console.log(review)
-  return {data, suggestions: review}
-})
-.then(({data, suggestions}) => {
-    let data1=`<section class="mx-48 my-8 flex">
+let response = fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}`)
+  .then((data) => data.json())
+  .then(async ({ data }) => {
+    let review = await fetch(`https://yts.mx/api/v2/movie_suggestions.json?movie_id=${movieId}`).then(data => data.json()).then(({ data }) => data.movies)
+    console.log(review)
+    return { data, suggestions: review }
+  })
+  .then(({ data, suggestions }) => {
+    let data1 = `<section class="mx-48 my-8 flex">
         <div class="w-1/4 mr-5">
         <a href="${data.movie.url}">
           <img
@@ -97,17 +97,16 @@ let response= fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieId
         <div class="w-1/4">
         <p class="pl-3 pb-3 text-xl text-white font-bold">Similar Movies</p>
         <div class="grid gap-x-2 gap-y-2 grid-cols-2">
-          ${
-            suggestions.map(suggestion => (
-              ` <div class="">
+          ${suggestions.map(suggestion => (
+      ` <div class="">
               <img
                 class="border-4 border-white ml-3 w-40 h-40"
                 src="${suggestion.medium_cover_image}"
                 alt="${suggestion.title}"
               />    
             </div>`
-            ))
-          }
+    ))
+      }
           </div>
           </div>
         </div>
@@ -278,11 +277,11 @@ let response= fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieId
           <p class="text-base text-[#919191]">Read More</p>
         </div>
       </section>`;
-   document.getElementById("detailPage").innerHTML=data1;
-    
-}).catch((error) =>{
-    console.log("Unable to fetch data",error);
-})
+    document.getElementById("detailPage").innerHTML = data1;
+
+  }).catch((error) => {
+    console.log("Unable to fetch data", error);
+  })
 
 
 
