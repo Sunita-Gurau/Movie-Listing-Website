@@ -1,7 +1,7 @@
 // js for pagination
 const prev = document.getElementById("prev");
 const next = document.getElementById("next");
-const current = document.getElementById("current");
+// const current = document.getElementById("current");
 
 
 let currentPage = 1;
@@ -36,9 +36,9 @@ prev.addEventListener("click", () => {
 })
 currentPage = sessionStorage.getItem("pageNumber") !== null ? sessionStorage.getItem("pageNumber") : currentPage;
 currentPage = parseInt(currentPage)
-// if(sessionStorage.getItem("pageNumber", currentPage)!==null)
+// if(sessionStorage.getItem("pageNumber")!==null)
 // {
-//     pageNo=sessionStorage.getItem("pageNumber", currentPage);
+//     pageNo=sessionStorage.getItem("pageNumber");
 // }
 // else{
 //     pageNo=currentPage;

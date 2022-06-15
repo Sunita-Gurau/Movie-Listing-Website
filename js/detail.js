@@ -98,7 +98,7 @@ let response = fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieI
         <p class="pl-3 pb-3 text-xl text-white font-bold">Similar Movies</p>
         <div class="grid gap-x-2 gap-y-2 grid-cols-2">
           ${suggestions.map(suggestion => (
-      ` <div class="">
+      ` <div onclick="openDetail(${suggestion.id})">
               <img
                 class="border-4 border-white ml-3 w-40 h-40"
                 src="${suggestion.medium_cover_image}"
@@ -109,35 +109,6 @@ let response = fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieI
       }
           </div>
           </div>
-        </div>
-      </section>
-      <section class="mx-48 my-8 flex">
-        <div class="relative z-1 w-1/3">
-          <iframe
-            src="https://www.youtube.com/embed/r9jwGansp1E"
-            class="w-full h-full"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-          <i
-            class="fa-solid fa-circle-play text-white absolute top-1/2 text-6xl left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
-          ></i>
-        </div>
-  
-        <div class="w-1/3">
-          <img
-            class="w-full h-full"
-            src="https://img.yts.mx/assets/images/movies/Men_in_Black_1997/medium-screenshot2.jpg"
-            alt="trailer"
-          />
-        </div>
-        <div class="w-1/3">
-          <img
-            class="w-full h-full"
-            src="https://img.yts.mx/assets/images/movies/Men_in_Black_1997/medium-screenshot2.jpg"
-            alt="movie"
-          />
         </div>
       </section>
       <section class="mx-48 my-8 flex">
@@ -285,6 +256,9 @@ let response = fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieI
 
 
 
-
+function openDetail(id) {
+  localStorage.setItem("movieId", id);
+  window.location.href = "detail.html";
+}
 
 
