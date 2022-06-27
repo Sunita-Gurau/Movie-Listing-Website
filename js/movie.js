@@ -11,27 +11,27 @@ let totalPages = 100;
 
 
 next.addEventListener("click", () => {
-    next.classList.add('bg-green-500');
-    prev.classList.remove('bg-green-500');
-    // prev.classList.remove('cursor-not-allowed', 'focus:outline-none', 'disabled:opacity-75')
-    if (nextPage <= totalPages) {
-        nextPage = currentPage + 1;
-        getMovies(nextPage);
-        currentPage++;
-        sessionStorage.setItem("pageNumber", currentPage)
-    }
+  next.classList.add('bg-green-500');
+  prev.classList.remove('bg-green-500');
+  // prev.classList.remove('cursor-not-allowed', 'focus:outline-none', 'disabled:opacity-75')
+  if (nextPage <= totalPages) {
+    nextPage = currentPage + 1;
+    getMovies(nextPage);
+    currentPage++;
+    sessionStorage.setItem("pageNumber", currentPage)
+  }
 
 })
 prev.addEventListener("click", () => {
-    prev.classList.add('bg-green-500');
-    next.classList.remove('bg-green-500');
-    if (prevPage <= totalPages) {
-        // prev.classList.remove('cursor-not-allowed', 'focus:outline-none', 'disabled:opacity-75')
-        prevPage = currentPage + 1;
-        getMovies(prevPage);
-        currentPage--;
-        sessionStorage.setItem("pageNumber", currentPage)
-    }
+  prev.classList.add('bg-green-500');
+  next.classList.remove('bg-green-500');
+  if (prevPage <= totalPages) {
+    // prev.classList.remove('cursor-not-allowed', 'focus:outline-none', 'disabled:opacity-75')
+    prevPage = currentPage + 1;
+    getMovies(prevPage);
+    currentPage--;
+    sessionStorage.setItem("pageNumber", currentPage)
+  }
 
 })
 currentPage = sessionStorage.getItem("pageNumber") !== null ? sessionStorage.getItem("pageNumber") : currentPage;
@@ -47,12 +47,12 @@ getMovies(currentPage);
 
 
 function getMovies(pageNumber) {
-    let response = fetch(`https://yts.mx/api/v2/list_movies.json?page=${pageNumber}`)
-        .then((data) => data.json())
-        .then(({ data }) => {
-            let data1 = "";
-            data.movies.map((values) => {
-                data1 += `<div>
+  let response = fetch(`https://yts.mx/api/v2/list_movies.json?page=${pageNumber}`)
+    .then((data) => data.json())
+    .then(({ data }) => {
+      let data1 = "";
+      data.movies.map((values) => {
+        data1 += `<div>
         <div
           class="border-4 border-white hover:border-green-500 relative group"
         >
@@ -80,25 +80,24 @@ function getMovies(pageNumber) {
         </div>
 
         <div class="pl-2">
-          <a href="#" class="text-white text-lg font-bold">${values.title}</a>
+          <p class="text-white text-lg font-bold truncate">${values.title}</p>
           <p class="text-neutral-300 text-sm">${values.year}</p>
         </div>
       </div>`;
-            });
-            document.getElementById("Movie1").innerHTML = data1;
+      });
+      document.getElementById("Movie1").innerHTML = data1;
 
-        }).catch((error) => {
-            console.log("Unable to fetch data", error);
-        })
+    }).catch((error) => {
+      console.log("Unable to fetch data", error);
+    })
 
 }
 
 
 function openDetail(id) {
-    localStorage.setItem("movieId", id);
-    window.location.href = "detail.html";
+  localStorage.setItem("movieId", id);
+  window.location.href = "detail.html";
 }
-
 
 
 
